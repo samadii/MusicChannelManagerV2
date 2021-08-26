@@ -4,7 +4,6 @@ import telegram
 import requests
 import mutagen
 from mutagen.mp3 import MP3
-from mutagen.mp4 import MP4
 from telegram import Update
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, CallbackContext
 from music_tag import load_file
@@ -148,7 +147,7 @@ def tag(update, context):
     try:
         context.bot.sendPhoto(
             chat_id = CHANNEL,
-            caption = "🎤" + artist + " - " + title + "🎼" + "\n\n" + "🆔👉 {USERNAME}",
+            caption = "🎤" + artist + " - " + title + "🎼" + "\n\n" + f"🆔👉 {USERNAME}",
             photo = open('artwork.jpg', 'rb')
         )
     except Exception as e:
@@ -177,7 +176,7 @@ def tag(update, context):
     music['lyrics'] = lyrics + custom_tag
     music.save()
     if CAPTION == "TRUE":
-        caption = "✏️ Title: " + title + "\n" + "👤 Artist: " + artist + "\n" + "💽 Album: " + album + "\n" + "🎼 Genre: " + genre + "\n\n" + "🆔👉 {USERNAME}"
+        caption = "✏️ Title: " + title + "\n" + "👤 Artist: " + artist + "\n" + "💽 Album: " + album + "\n" + "🎼 Genre: " + genre + "\n\n" + f"🆔👉 {USERNAME}"
     else:
         caption = update.message['caption']
     try:

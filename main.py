@@ -106,7 +106,7 @@ def tag(update, context):
             title = t.split("(@")[-2]
         elif t.__contains__("[@") and not "@" in first:
             title = t.split("[@")[-2]
-        elif t.__contains__("[") and (not tl.__contains__("[@")) and (not "@" in first):
+        elif t.__contains__("[") and (not t.__contains__("[@")) and (not "@" in first):
             title = t.split("[")[-2]
         elif (not "@" in first) and (not t.__contains__("(@") or t.__contains__("[") or t.__contains__("[@")):
             title = t.split("@")[-2]

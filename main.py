@@ -40,7 +40,7 @@ def tag(update, context):
     if fname.__contains__("@") or fname.__contains__("["):
         first = fname.split(' ')[0]
         if "@" in first:
-            filename = fname.split(f'{first}', -1)
+            filename = fname.split(f'{first}')[+1]
         elif fname.__contains__("(@") and not "@" in first:
             filename = fname.split("(@")[-2]
         elif fname.__contains__("[@") and not "@" in first:
@@ -57,7 +57,7 @@ def tag(update, context):
     if g.__contains__("@") or g.__contains__("["):
         first = g.split(' ')[0]
         if "@" in first:
-            genre = g.split(f'{first}', -1)
+            genre = g.split(f'{first}')[+1]
         elif g.__contains__("(@") and not "@" in first:
             genre = g.split("(@")[-2]
         elif g.__contains__("{@") and not "@" in first:
@@ -74,7 +74,7 @@ def tag(update, context):
     if l.__contains__("@") or l.__contains__("["):
         first = l.split(' ')[0]
         if "@" in first:
-            lyrics = l.split(f'{first}', -1)
+            lyrics = l.split(f'{first}')[+1]
         elif l.__contains__("(@") and not "@" in first:
             lyrics = l.split("(@")[-2]
         elif l.__contains__("{@") and not "@" in first:
@@ -91,7 +91,7 @@ def tag(update, context):
     if c.__contains__("@") or c.__contains__("["):
         first = c.split(' ')[0]
         if "@" in first:
-            comment = c.split(f'{first}', -1)
+            comment = c.split(f'{first}')[+1]
         elif c.__contains__("(@") and not "@" in first:
             comment = c.split("(@")[-2]
         elif c.__contains__("{@") and not "@" in first:
@@ -108,7 +108,7 @@ def tag(update, context):
     if t.__contains__("@") or t.__contains__("["):
         first = t.split(' ')[0]
         if "@" in first:
-            title = t.split(f'{first}', -1)
+            title = t.split(f'{first}')[+1]
         elif t.__contains__("{@") and not "@" in first:
             title = t.split("{@")[-2]
         elif t.__contains__("(@") and not "@" in first:
@@ -125,7 +125,7 @@ def tag(update, context):
     if al.__contains__("@") or al.__contains__("["):
         first = al.split(' ')[0]
         if "@" in first:
-            album = al.split(f'{first}', -1)
+            album = al.split(f'{first}')[+1]
         elif al.__contains__("(@") and not "@" in first:
             album = al.split("(@")[-2]
         elif al.__contains__("{@") and not "@" in first:
@@ -142,7 +142,7 @@ def tag(update, context):
     if a.__contains__("@") or a.__contains__("[") or a.__contains__("("):
         first = a.split(' ')[0]
         if "@" in first:
-            artist = a.split(f'{first}', -1)
+            artist = a.split(f'{first}')[+1]
         elif a.__contains__("(@") and not "@" in first:
             artist = a.split("(@")[-2]
         elif a.__contains__("[@") and not "@" in first:

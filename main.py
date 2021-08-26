@@ -15,7 +15,7 @@ CHANNEL = os.environ.get('CHANNEL_ID')
 USERNAME = os.environ.get('CHANNEL_USERNAME')
 CAPTION = os.environ.get("DYNAMIC_CAPTION")
 if 'CUSTOM_TAG' in os.environ:
-    custom_tag = " [" + os.environ.get("CUSTOM_TAG") + "]"
+    custom_tag = " {" + os.environ.get("CUSTOM_TAG") + "}"
 else:
     custom_tag = " "
 
@@ -45,9 +45,11 @@ def tag(update, context):
             filename = fname.split("(@")[-2]
         elif fname.__contains__("[@") and not "@" in first:
             filename = fname.split("[@")[-2]
+        elif fname.__contains__("{@") and not "@" in first:
+            filename = fname.split("{@")[-2]
         elif fname.__contains__("[") and (not fname.__contains__("[@")) and (not "@" in first):
             filename = fname.split("[")[-2]
-        elif (not "@" in first) and (not fname.__contains__("(@") or fname.__contains__("[") or fname.__contains__("[@")):
+        elif (not "@" in first) and (not fname.__contains__("(@") or fname.__contains__("[") or fname.__contains__("{@") or fname.__contains__("[@")):
             filename = fname.split("@")[-2]
     else:
         filename = fname
@@ -58,11 +60,13 @@ def tag(update, context):
             genre = g.split(f'{first}', -1)
         elif g.__contains__("(@") and not "@" in first:
             genre = g.split("(@")[-2]
+        elif g.__contains__("{@") and not "@" in first:
+            genre = g.split("{@")[-2]
         elif g.__contains__("[@") and not "@" in first:
             genre = g.split("[@")[-2]
         elif g.__contains__("[") and (not g.__contains__("[@")) and (not "@" in first):
             genre = g.split("[")[-2]
-        elif (not "@" in first) and (not g.__contains__("(@") or g.__contains__("[") or g.__contains__("[@")):
+        elif (not "@" in first) and (not g.__contains__("(@") or g.__contains__("{@") or g.__contains__("[") or g.__contains__("[@")):
             genre = g.split("@")[-2]
     else:
         genre = g
@@ -73,11 +77,13 @@ def tag(update, context):
             lyrics = l.split(f'{first}', -1)
         elif l.__contains__("(@") and not "@" in first:
             lyrics = l.split("(@")[-2]
+        elif l.__contains__("{@") and not "@" in first:
+            lyrics = l.split("{@")[-2]
         elif l.__contains__("[@") and not "@" in first:
             lyrics = l.split("[@")[-2]
         elif l.__contains__("[") and (not l.__contains__("[@")) and (not "@" in first):
             lyrics = l.split("[")[-2]
-        elif (not "@" in first) and (not l.__contains__("(@") or l.__contains__("[") or l.__contains__("[@")):
+        elif (not "@" in first) and (not l.__contains__("(@") or l.__contains__("{@") or l.__contains__("[") or l.__contains__("[@")):
             lyrics = l.split("@")[-2]
     else:
         lyrics = l
@@ -88,11 +94,13 @@ def tag(update, context):
             comment = c.split(f'{first}', -1)
         elif c.__contains__("(@") and not "@" in first:
             comment = c.split("(@")[-2]
+        elif c.__contains__("{@") and not "@" in first:
+            comment = c.split("{@")[-2]
         elif c.__contains__("[@") and not "@" in first:
             comment = c.split("[@")[-2]
         elif c.__contains__("[") and (not c.__contains__("[@")) and (not "@" in first):
             comment = c.split("[")[-2]
-        elif (not "@" in first) and (not c.__contains__("(@") or c.__contains__("[") or c.__contains__("[@")):
+        elif (not "@" in first) and (not c.__contains__("(@") or c.__contains__("{@") or c.__contains__("[") or c.__contains__("[@")):
             comment = c.split("@")[-2]
     else:
         comment = c
@@ -101,13 +109,15 @@ def tag(update, context):
         first = t.split(' ')[0]
         if "@" in first:
             title = t.split(f'{first}', -1)
+        elif t.__contains__("{@") and not "@" in first:
+            title = t.split("{@")[-2]
         elif t.__contains__("(@") and not "@" in first:
             title = t.split("(@")[-2]
         elif t.__contains__("[@") and not "@" in first:
             title = t.split("[@")[-2]
         elif t.__contains__("[") and (not t.__contains__("[@")) and (not "@" in first):
             title = t.split("[")[-2]
-        elif (not "@" in first) and (not t.__contains__("(@") or t.__contains__("[") or t.__contains__("[@")):
+        elif (not "@" in first) and (not t.__contains__("(@") or t.__contains__("{@") or t.__contains__("[") or t.__contains__("[@")):
             title = t.split("@")[-2]
     else:
         title = t
@@ -118,11 +128,13 @@ def tag(update, context):
             album = al.split(f'{first}', -1)
         elif al.__contains__("(@") and not "@" in first:
             album = al.split("(@")[-2]
+        elif al.__contains__("{@") and not "@" in first:
+            album = al.split("{@")[-2]
         elif al.__contains__("[@") and not "@" in first:
             album = al.split("[@")[-2]
         elif al.__contains__("[") and (not al.__contains__("[@")) and (not "@" in first):
             album = al.split("[")[-2]
-        elif (not "@" in first) and (not al.__contains__("(@") or al.__contains__("[") or al.__contains__("[@")):
+        elif (not "@" in first) and (not al.__contains__("(@") or al.__contains__("{@") or al.__contains__("[") or al.__contains__("[@")):
             album = al.split("@")[-2]
     else:
         album = al
@@ -135,11 +147,13 @@ def tag(update, context):
             artist = a.split("(@")[-2]
         elif a.__contains__("[@") and not "@" in first:
             artist = a.split("[@")[-2]
+        elif a.__contains__("{@") and not "@" in first:
+            artist = a.split("{@")[-2]
         elif a.__contains__("[") and (not a.__contains__("[@")) and (not "@" in first):
             artist = a.split("[")[-2]
         elif a.__contains__("(") and (not a.__contains__("(@")) and (not "@" in first):
             artist = a.split("(")[-2]
-        elif (not "@" in first) and (not a.__contains__("(@") or a.__contains__("[") or a.__contains__("[@") or a.__contains__("(")):
+        elif (not "@" in first) and (not a.__contains__("(@") or a.__contains__("{@") or a.__contains__("[") or a.__contains__("[@") or a.__contains__("(")):
             artist = a.split("@")[-2]
     else:
         artist = a

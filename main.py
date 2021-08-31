@@ -1,31 +1,56 @@
 import os
 import io
-import telegram
 import requests
 import mutagen
 from mutagen.mp3 import MP3
-from telegram import Update
-from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, CallbackContext
 from music_tag import load_file
 from PIL import Image
+from pyrogram import Client, filters
+from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
+from config import Config
 
 
-BOT_TOKEN = os.environ.get('BOT_TOKEN')
-CHANNEL = os.environ.get('CHANNEL_ID')
-USERNAME = os.environ.get('CHANNEL_USERNAME')
-CAPTION = os.environ.get("DYNAMIC_CAPTION")
-if 'CUSTOM_TAG' in os.environ:
-    custom_tag = " {" + os.environ.get("CUSTOM_TAG") + "}"
-else:
-    custom_tag = " "
+Bot = Client(
+    "Bot",
+    bot_token = Config.BOT_TOKEN,
+    api_id = Config.API_ID,
+    api_hash = Config.API_HASH
+)
 
 
-def tag(update, context):
-    chat_id = update.message.chat_id
-    fname = update.message['audio']['file_name']
-    file_id = update.message['audio']['file_id']
-    file = context.bot.get_file(file_id).download('file.mp3')
-    music = load_file("file.mp3")
+START_TXT = """
+Hi {}, I'm Music Channel Manager.
+
+I can manage your music channel with some cool features like appending your predefined username to the musics tags, getting a short demo of the musics and posting the musics artworks.
+
+Just add me to a channel and post a music to get started.
+"""
+
+START_BTN = InlineKeyboardMarkup(
+        [[
+        InlineKeyboardButton('Source Code', url='https://github.com/samadii/MusicChannelManagerV2'),
+        ]]
+    )
+
+
+@Bot.on_message(filters.command(["start"]))
+async def start(bot, update):
+    text = START_TXT.format(update.from_user.mention)
+    reply_markup = START_BTN
+    await update.reply_text(
+        text=text,
+        disable_web_page_preview=True,
+        reply_markup=reply_markup
+    )
+
+    
+@Bot.on_message(filters.channel & filters.audio)
+async def tag(bot, m):
+    fname = m.audio.file_name
+    m = await bot.get_messages(m.chat.id, m.message_id)
+    file = await m.download(file_name="temp/file.mp3")
+    await m.delete()
+    music = load_file("temp/file.mp3")
     t = f"{music['title']}"
     a = f"{music['artist']}"
     al = f"{music['album']}"
@@ -159,10 +184,10 @@ def tag(update, context):
         artist = a
 
     try:
-        context.bot.sendPhoto(
-            chat_id = CHANNEL,
-            caption = "🎤" + artist + " - " + title + "🎼" + "\n\n" + f"🆔👉 {USERNAME}",
-            photo = open('artwork.jpg', 'rb')
+        bot.send_photo(
+            chat_id=m.chat.id,
+            caption="🎤" + artist + " - " + title + "🎼" + "\n\n" + f"🆔👉 {Config.USERNAME}",
+            photo=open('artwork.jpg', 'rb')
         )
     except Exception as e:
         print(e)
@@ -174,7 +199,7 @@ def tag(update, context):
         os.system("ffmpeg -ss " + str(length) + " -t 60 -y -i \"" + file + "\" -ac 1 -map 0:a -codec:a libopus -b:a 128k -vbr off -ar 24000 temp/output.ogg")
     else:
         os.system("ffmpeg -ss 0 -t 60 -y -i \"" + file + "\" -ac 1 -map 0:a -codec:a libopus -b:a 128k -vbr off -ar 24000 temp/output.ogg")
-    sendVoice(CHANNEL, "temp/output.ogg", f"🎤{artist} - {title}🎼\n\n🆔👉 {USERNAME}")
+    sendVoice(m.chat.id, "temp/output.ogg", f"🎤{artist} - {title}🎼\n\n🆔👉 {Config.USERNAME}")
         
     music.remove_tag('comment')
     music.remove_tag('artist')
@@ -182,41 +207,33 @@ def tag(update, context):
     music.remove_tag('title')
     music.remove_tag('album')
     music.remove_tag('genre')
-    music['artist'] = artist + custom_tag
-    music['title'] = title + custom_tag
-    music['album'] = album + custom_tag
-    music['genre'] = genre + custom_tag
-    music['comment'] = comment + custom_tag
-    music['lyrics'] = lyrics + custom_tag
+    music['artist'] = artist + Config.custom_tag
+    music['title'] = title + Config.custom_tag
+    music['album'] = album + Config.custom_tag
+    music['genre'] = genre + Config.custom_tag
+    music['comment'] = comment + Config.custom_tag
+    music['lyrics'] = lyrics + Config.custom_tag
     music.save()
-    if CAPTION == "TRUE":
-        caption = "✏️ Title: " + title + "\n" + "👤 Artist: " + artist + "\n" + "💽 Album: " + album + "\n" + "🎼 Genre: " + genre + "\n\n" + f"🆔👉 {USERNAME}"
+    if Config.CAPTION == "TRUE":
+        caption = "✏️ Title: " + title + "\n" + "👤 Artist: " + artist + "\n" + "💽 Album: " + album + "\n" + "🎼 Genre: " + genre + "\n\n" + f"🆔👉 {Config.USERNAME}"
     else:
-        caption = update.message['caption']
+        caption = m.caption
     try:
-        context.bot.sendAudio(
-            chat_id = CHANNEL,
-            filename = filename,
-            caption = caption, 
-            audio = open('file.mp3', 'rb')
+        await bot.send_audio(
+            chat_id=m.chat.id,
+            file_name=filename + ".mp3",
+            caption=caption,
+            thumb=open('artwork.jpg', 'rb'),
+            audio="temp/file.mp3"
         )
     except Exception as e:
         print(e)
 
-def start(update: Update, context: CallbackContext) -> None:
-    """Send a message when the command /start is issued."""
-    update.message.reply_text("Hi, Add me to the predefined channel and then send the musics here, i will post them in the channel.")
 
 def sendVoice(chat_id,file_name,text):
-    url = "https://api.telegram.org/bot%s/sendVoice"%(BOT_TOKEN)
+    url = "https://api.telegram.org/bot%s/sendVoice"%(Config.BOT_TOKEN)
     files = {'voice': open(file_name, 'rb')}
     data = {'chat_id' : chat_id, 'caption' : text}
     r= requests.post(url, files=files, data=data)
    
-
-if __name__=='__main__':
-    updater = Updater(BOT_TOKEN, use_context=True)
-    dispatcher = updater.dispatcher
-    dispatcher.add_handler(MessageHandler(Filters.audio, tag))
-    dispatcher.add_handler(CommandHandler("start", start))
-    updater.start_polling()
+Bot.run()

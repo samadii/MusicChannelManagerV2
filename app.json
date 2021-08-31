@@ -11,9 +11,13 @@
       "value": "@my_channel",
       "required": false
     },
-    "CHANNEL_ID": {
-      "description": "Your telegram channel id, get it from @chnlidbot",
-      "value": "-1001000431759"
+    "API_ID": {
+      "description": "Add your telegram API_ID",
+      "value": ""
+    },
+    "API_HASH": {
+      "description": "Add your telegram API_HASH",
+      "value": ""
     },
     "CHANNEL_USERNAME": {
       "description": "Your telegram channel username.",

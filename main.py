@@ -184,7 +184,7 @@ async def tag(bot, m):
         artist = a
 
     try:
-        bot.send_photo(
+        await bot.send_photo(
             chat_id=m.chat.id,
             caption="🎤" + artist + " - " + title + "🎼" + "\n\n" + f"🆔👉 {Config.USERNAME}",
             photo=open('artwork.jpg', 'rb')

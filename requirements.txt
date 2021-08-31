@@ -1,4 +1,5 @@
-python-telegram-bot
+pyrogram
+tgcrypto
 music_tag
 mutagen
 requests

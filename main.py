@@ -62,80 +62,45 @@ async def tag(bot, m):
     img = Image.open(io.BytesIO(image_data))
     img.save("artwork.jpg")
   
-    if fname.__contains__("@") or fname.__contains__(".me/"):
-        first = fname.split(' ')[0]
-        last = fname.rsplit(' ')[0]
-        if first.__contains__("@") or first.__contains__(".me/"):
-            filename = fname.split(f'{first}')[+1]
-        if last.__contains__("@") or last.__contains__(".me/"):
-            filename = fname.split(f"{fname.rsplit(' ', 1)[1]}")[0]
-    else:
-        filename = fname
+    if fname.split(' ')[0].__contains__("@") or fname.split(' ')[0].__contains__(".me/"):
+        fname = fname.split(f"{fname.split(' ')[0]}")[+1]
+    if (fname.__contains__("@") or fname.__contains__(".me/")) and ((not fname.split(' ')[0].__contains__("@")) and (not fname.split(' ')[0].__contains__(".me/"))):
+        fname = fname.split(f"{fname.rsplit(' ', 1)[1]}")[0]
 
-    if g.__contains__("@") or g.__contains__(".me/"):
-        first = g.split(' ')[0]
-        last = g.rsplit(' ')[0]
-        if first.__contains__("@") or first.__contains__(".me/"):
-            genre = g.split(f'{first}')[+1]
-        if last.__contains__("@") or last.__contains__(".me/"):
-            genre = g.split(f"{g.rsplit(' ', 1)[1]}")[0]
-    else:
-        genre = g
-    
-    if l.__contains__("@") or l.__contains__(".me/"):
-        first = l.split(' ')[0]
-        last = l.rsplit(' ')[0]
-        if first.__contains__("@") or first.__contains__(".me/"):
-            lyrics = l.split(f'{first}')[+1]
-        if last.__contains__("@") or last.__contains__(".me/"):
-            lyrics = l.split(f"{l.rsplit(' ', 1)[1]}")[0]
-    else:
-        lyrics = l
+    if a.split(' ')[0].__contains__("@") or a.split(' ')[0].__contains__(".me/"):
+        a = a.split(f"{a.split(' ')[0]}")[+1]
+    if (a.__contains__("@") or a.__contains__(".me/")) and ((not a.split(' ')[0].__contains__("@")) and (not a.split(' ')[0].__contains__(".me/"))):
+        a = a.split(f"{a.rsplit(' ', 1)[1]}")[0]
+     
+    if al.split(' ')[0].__contains__("@") or al.split(' ')[0].__contains__(".me/"):
+        al = al.split(f"{al.split(' ')[0]}")[+1]
+    if (al.__contains__("@") or al.__contains__(".me/")) and ((not al.split(' ')[0].__contains__("@")) and (not al.split(' ')[0].__contains__(".me/"))):
+        al = al.split(f"{al.rsplit(' ', 1)[1]}")[0]
 
-    if c.__contains__("@") or c.__contains__(".me/"):
-        first = c.split(' ')[0]
-        last = c.rsplit(' ')[0]
-        if first.__contains__("@") or first.__contains__(".me/"):
-            comment = c.split(f'{first}')[+1]
-        if last.__contains__("@") or last.__contains__(".me/"):
-            comment = c.split(f"{c.rsplit(' ', 1)[1]}")[0]
-    else:
-        comment = c
+    if c.split(' ')[0].__contains__("@") or c.split(' ')[0].__contains__(".me/"):
+        c = c.split(f"{c.split(' ')[0]}")[+1]
+    if (c.__contains__("@") or c.__contains__(".me/")) and ((not c.split(' ')[0].__contains__("@")) and (not c.split(' ')[0].__contains__(".me/"))):
+        c = c.split(f"{c.rsplit(' ', 1)[1]}")[0]
 
-    if t.__contains__("@") or t.__contains__(".me/"):
-        first = t.split(' ')[0]
-        last = t.rsplit(' ')[0]
-        if first.__contains__("@") or first.__contains__(".me/"):
-            title = t.split(f'{first}')[+1]
-        if last.__contains__("@") or last.__contains__(".me/"):
-            title = t.split(f"{t.rsplit(' ', 1)[1]}")[0]
-    else:
-        title = t
+    if l.split(' ')[0].__contains__("@") or l.split(' ')[0].__contains__(".me/"):
+        l = l.split(f"{l.split(' ')[0]}")[+1]
+    if (l.__contains__("@") or l.__contains__(".me/")) and ((not l.split(' ')[0].__contains__("@")) and (not l.split(' ')[0].__contains__(".me/"))):
+        l = l.split(f"{l.rsplit(' ', 1)[1]}")[0]
 
-    if al.__contains__("@") or al.__contains__(".me/"):
-        first = al.split(' ')[0]
-        last = al.rsplit(' ')[0]
-        if first.__contains__("@") or first.__contains__(".me/"):
-            album = al.split(f'{first}')[+1]
-        if last.__contains__("@") or last.__contains__(".me/"):
-            album = al.split(f"{al.rsplit(' ', 1)[1]}")[0]
-    else:
-        album = al
+    if t.split(' ')[0].__contains__("@") or t.split(' ')[0].__contains__(".me/"):
+        t = t.split(f"{t.split(' ')[0]}")[+1]
+    if (t.__contains__("@") or t.__contains__(".me/")) and ((not t.split(' ')[0].__contains__("@")) and (not t.split(' ')[0].__contains__(".me/"))):
+        t = t.split(f"{t.rsplit(' ', 1)[1]}")[0]
 
-    if a.__contains__("@") or a.__contains__(".me/"):
-        first = a.split(' ')[0]
-        last = a.rsplit(' ')[0]
-        if first.__contains__("@") or first.__contains__(".me/"):
-            artist = a.split(f'{first}')[+1]
-        if last.__contains__("@") or last.__contains__(".me/"):
-            artist = a.split(f"{a.rsplit(' ', 1)[1]}")[0]
-    else:
-        artist = a
+    if g.split(' ')[0].__contains__("@") or g.split(' ')[0].__contains__(".me/"):
+        g = g.split(f"{g.split(' ')[0]}")[+1]
+    if (g.__contains__("@") or g.__contains__(".me/")) and ((not g.split(' ')[0].__contains__("@")) and (not g.split(' ')[0].__contains__(".me/"))):
+        g = g.split(f"{g.rsplit(' ', 1)[1]}")[0]
 
     try:
         await bot.send_photo(
             chat_id=m.chat.id,
-            caption="🎤" + artist + " - " + title + "🎼" + "\n\n" + f"🆔👉 {Config.USERNAME}",
+            caption="🎤" + a + " - " + t + "🎼" + "\n\n" + f"🆔👉 {Config.USERNAME}",
             photo=open('artwork.jpg', 'rb')
         )
     except Exception as e:
@@ -148,7 +113,7 @@ async def tag(bot, m):
         os.system("ffmpeg -ss " + str(length) + " -t 60 -y -i \"" + file + "\" -ac 1 -map 0:a -codec:a libopus -b:a 128k -vbr off -ar 24000 temp/output.ogg")
     else:
         os.system("ffmpeg -ss 0 -t 60 -y -i \"" + file + "\" -ac 1 -map 0:a -codec:a libopus -b:a 128k -vbr off -ar 24000 temp/output.ogg")
-    sendVoice(m.chat.id, "temp/output.ogg", f"🎤{artist} - {title}🎼\n\n🆔👉 {Config.USERNAME}")
+    sendVoice(m.chat.id, "temp/output.ogg", f"🎤{a} - {t}🎼\n\n🆔👉 {Config.USERNAME}")
         
     music.remove_tag('comment')
     music.remove_tag('artist')
@@ -156,21 +121,21 @@ async def tag(bot, m):
     music.remove_tag('title')
     music.remove_tag('album')
     music.remove_tag('genre')
-    music['artist'] = artist + Config.custom_tag
-    music['title'] = title + Config.custom_tag
-    music['album'] = album + Config.custom_tag
-    music['genre'] = genre + Config.custom_tag
-    music['comment'] = comment + Config.custom_tag
-    music['lyrics'] = lyrics + Config.custom_tag
+    music['artist'] = a + Config.custom_tag
+    music['title'] = t + Config.custom_tag
+    music['album'] = al + Config.custom_tag
+    music['genre'] = g + Config.custom_tag
+    music['comment'] = c + Config.custom_tag
+    music['lyrics'] = l + Config.custom_tag
     music.save()
     if Config.CAPTION == "TRUE":
-        caption = "✏️ Title: " + title + "\n" + "👤 Artist: " + artist + "\n" + "💽 Album: " + album + "\n" + "🎼 Genre: " + genre + "\n\n" + f"🆔👉 {Config.USERNAME}"
+        caption = "✏️ Title: " + t + "\n" + "👤 Artist: " + a + "\n" + "💽 Album: " + al + "\n" + "🎼 Genre: " + g + "\n\n" + f"🆔👉 {Config.USERNAME}"
     else:
         caption = m.caption
     try:
         await bot.send_audio(
             chat_id=m.chat.id,
-            file_name=filename + ".mp3",
+            file_name=fname + ".mp3",
             caption=caption,
             thumb=open('artwork.jpg', 'rb'),
             audio="temp/file.mp3"

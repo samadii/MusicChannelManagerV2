@@ -62,124 +62,73 @@ async def tag(bot, m):
     img = Image.open(io.BytesIO(image_data))
     img.save("artwork.jpg")
   
-    if fname.__contains__("@") or fname.__contains__("["):
+    if fname.__contains__("@") or fname.__contains__(".me/"):
         first = fname.split(' ')[0]
-        if "@" in first:
+        last = fname.rsplit(' ')[0]
+        if first.__contains__("@") or first.__contains__(".me/"):
             filename = fname.split(f'{first}')[+1]
-        elif fname.__contains__("(@") and not "@" in first:
-            filename = fname.split("(@")[-2]
-        elif fname.__contains__("[@") and not "@" in first:
-            filename = fname.split("[@")[-2]
-        elif fname.__contains__("{@") and not "@" in first:
-            filename = fname.split("{@")[-2]
-        elif fname.__contains__("[") and (not fname.__contains__("[@")) and (not "@" in first):
-            filename = fname.split("[")[-2]
-        elif (not "@" in first) and (not fname.__contains__("(@") or fname.__contains__("[") or fname.__contains__("{@") or fname.__contains__("[@")):
-            filename = fname.split("@")[-2]
+        if last.__contains__("@") or last.__contains__(".me/"):
+            filename = fname.split(f"{fname.rsplit(' ', 1)[1]}")[0]
     else:
         filename = fname
 
-    if g.__contains__("@") or g.__contains__("["):
+    if g.__contains__("@") or g.__contains__(".me/"):
         first = g.split(' ')[0]
-        if "@" in first:
+        last = g.rsplit(' ')[0]
+        if first.__contains__("@") or first.__contains__(".me/"):
             genre = g.split(f'{first}')[+1]
-        elif g.__contains__("(@") and not "@" in first:
-            genre = g.split("(@")[-2]
-        elif g.__contains__("{@") and not "@" in first:
-            genre = g.split("{@")[-2]
-        elif g.__contains__("[@") and not "@" in first:
-            genre = g.split("[@")[-2]
-        elif g.__contains__("[") and (not g.__contains__("[@")) and (not "@" in first):
-            genre = g.split("[")[-2]
-        elif (not "@" in first) and (not g.__contains__("(@") or g.__contains__("{@") or g.__contains__("[") or g.__contains__("[@")):
-            genre = g.split("@")[-2]
+        if last.__contains__("@") or last.__contains__(".me/"):
+            genre = g.split(f"{g.rsplit(' ', 1)[1]}")[0]
     else:
         genre = g
     
-    if l.__contains__("@") or l.__contains__("["):
+    if l.__contains__("@") or l.__contains__(".me/"):
         first = l.split(' ')[0]
-        if "@" in first:
+        last = l.rsplit(' ')[0]
+        if first.__contains__("@") or first.__contains__(".me/"):
             lyrics = l.split(f'{first}')[+1]
-        elif l.__contains__("(@") and not "@" in first:
-            lyrics = l.split("(@")[-2]
-        elif l.__contains__("{@") and not "@" in first:
-            lyrics = l.split("{@")[-2]
-        elif l.__contains__("[@") and not "@" in first:
-            lyrics = l.split("[@")[-2]
-        elif l.__contains__("[") and (not l.__contains__("[@")) and (not "@" in first):
-            lyrics = l.split("[")[-2]
-        elif (not "@" in first) and (not l.__contains__("(@") or l.__contains__("{@") or l.__contains__("[") or l.__contains__("[@")):
-            lyrics = l.split("@")[-2]
+        if last.__contains__("@") or last.__contains__(".me/"):
+            lyrics = l.split(f"{l.rsplit(' ', 1)[1]}")[0]
     else:
         lyrics = l
 
-    if c.__contains__("@") or c.__contains__("["):
+    if c.__contains__("@") or c.__contains__(".me/"):
         first = c.split(' ')[0]
-        if "@" in first:
+        last = c.rsplit(' ')[0]
+        if first.__contains__("@") or first.__contains__(".me/"):
             comment = c.split(f'{first}')[+1]
-        elif c.__contains__("(@") and not "@" in first:
-            comment = c.split("(@")[-2]
-        elif c.__contains__("{@") and not "@" in first:
-            comment = c.split("{@")[-2]
-        elif c.__contains__("[@") and not "@" in first:
-            comment = c.split("[@")[-2]
-        elif c.__contains__("[") and (not c.__contains__("[@")) and (not "@" in first):
-            comment = c.split("[")[-2]
-        elif (not "@" in first) and (not c.__contains__("(@") or c.__contains__("{@") or c.__contains__("[") or c.__contains__("[@")):
-            comment = c.split("@")[-2]
+        if last.__contains__("@") or last.__contains__(".me/"):
+            comment = c.split(f"{c.rsplit(' ', 1)[1]}")[0]
     else:
         comment = c
 
-    if t.__contains__("@") or t.__contains__("["):
+    if t.__contains__("@") or t.__contains__(".me/"):
         first = t.split(' ')[0]
-        if "@" in first:
+        last = t.rsplit(' ')[0]
+        if first.__contains__("@") or first.__contains__(".me/"):
             title = t.split(f'{first}')[+1]
-        elif t.__contains__("{@") and not "@" in first:
-            title = t.split("{@")[-2]
-        elif t.__contains__("(@") and not "@" in first:
-            title = t.split("(@")[-2]
-        elif t.__contains__("[@") and not "@" in first:
-            title = t.split("[@")[-2]
-        elif t.__contains__("[") and (not t.__contains__("[@")) and (not "@" in first):
-            title = t.split("[")[-2]
-        elif (not "@" in first) and (not t.__contains__("(@") or t.__contains__("{@") or t.__contains__("[") or t.__contains__("[@")):
-            title = t.split("@")[-2]
+        if last.__contains__("@") or last.__contains__(".me/"):
+            title = t.split(f"{t.rsplit(' ', 1)[1]}")[0]
     else:
         title = t
 
-    if al.__contains__("@") or al.__contains__("["):
+    if al.__contains__("@") or al.__contains__(".me/"):
         first = al.split(' ')[0]
-        if "@" in first:
+        last = al.rsplit(' ')[0]
+        if first.__contains__("@") or first.__contains__(".me/"):
             album = al.split(f'{first}')[+1]
-        elif al.__contains__("(@") and not "@" in first:
-            album = al.split("(@")[-2]
-        elif al.__contains__("{@") and not "@" in first:
-            album = al.split("{@")[-2]
-        elif al.__contains__("[@") and not "@" in first:
-            album = al.split("[@")[-2]
-        elif al.__contains__("[") and (not al.__contains__("[@")) and (not "@" in first):
-            album = al.split("[")[-2]
-        elif (not "@" in first) and (not al.__contains__("(@") or al.__contains__("{@") or al.__contains__("[") or al.__contains__("[@")):
-            album = al.split("@")[-2]
+        if last.__contains__("@") or last.__contains__(".me/"):
+            album = al.split(f"{al.rsplit(' ', 1)[1]}")[0]
     else:
         album = al
 
-    if a.__contains__("@") or a.__contains__("[") or a.__contains__("("):
+    if a.__contains__("@") or a.__contains__(".me/"):
         first = a.split(' ')[0]
-        if "@" in first:
+        last = a.rsplit(' ')[0]
+        if first.__contains__("@") or first.__contains__(".me/"):
             artist = a.split(f'{first}')[+1]
-        elif a.__contains__("(@") and not "@" in first:
-            artist = a.split("(@")[-2]
-        elif a.__contains__("[@") and not "@" in first:
-            artist = a.split("[@")[-2]
-        elif a.__contains__("{@") and not "@" in first:
-            artist = a.split("{@")[-2]
-        elif a.__contains__("[") and (not a.__contains__("[@")) and (not "@" in first):
-            artist = a.split("[")[-2]
-        elif a.__contains__("(") and (not a.__contains__("(@")) and (not "@" in first):
-            artist = a.split("(")[-2]
-        elif (not "@" in first) and (not a.__contains__("(@") or a.__contains__("{@") or a.__contains__("[") or a.__contains__("[@") or a.__contains__("(")):
-            artist = a.split("@")[-2]
+        if last.__contains__("@") or last.__contains__(".me/"):
+            artist = a.split(f"{a.rsplit(' ', 1)[1]}")[0]
     else:
         artist = a
 

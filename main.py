@@ -131,7 +131,7 @@ async def tag(bot, m):
     if Config.CAPTION == "TRUE":
         caption = "✏️ Title: " + t + "\n" + "👤 Artist: " + a + "\n" + "💽 Album: " + al + "\n" + "🎼 Genre: " + g + "\n\n" + f"🆔👉 {Config.USERNAME}"
     else:
-        caption = m.caption
+        caption = m.caption if m.caption else " "
     try:
         await bot.send_audio(
             chat_id=m.chat.id,

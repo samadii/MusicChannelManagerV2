@@ -20,9 +20,7 @@ Bot = Client(
 
 START_TXT = """
 Hi {}, I'm Music Channel Manager.
-
 I can manage your music channel with some cool features like appending your predefined username to the musics tags, getting a short demo of the musics and posting the musics artworks.
-
 Just add me to a channel and post a music to get started.
 """
 
@@ -45,10 +43,9 @@ async def start(bot, update):
 
     
 @Bot.on_message(filters.channel & filters.audio)
-async def tag(bot, m):
+async def music(bot, m):
     fname = m.audio.file_name
-    m = await bot.get_messages(m.chat.id, m.message_id)
-    file = await m.download(file_name="temp/file.mp3")
+    file = await m.download("temp/file.mp3")
     await m.delete()
     music = load_file("temp/file.mp3")
     t = f"{music['title']}"
@@ -57,11 +54,14 @@ async def tag(bot, m):
     g = f"{music['genre']}"
     c = f"{music['comment']}"
     l = f"{music['lyrics']}"
-    ar = music['artwork']
-    image_data = ar.value.data
-    img = Image.open(io.BytesIO(image_data))
-    img.save("artwork.jpg")
-  
+    try:
+        artwork = music['artwork']
+        image_data = artwork.value.data
+        img = Image.open(io.BytesIO(image_data))
+        img.save("artwork.jpg")
+    except ValueError:
+        artwork = None
+
     if fname.split(' ')[0].__contains__("@") or fname.split(' ')[0].__contains__(".me/"):
         fname = fname.split(f"{fname.split(' ')[0]}")[+1]
     elif (fname.__contains__("@") or fname.__contains__(".me/")) and ((not fname.split(' ')[0].__contains__("@")) and (not fname.split(' ')[0].__contains__(".me/"))):
@@ -97,14 +97,15 @@ async def tag(bot, m):
     elif (g.__contains__("@") or g.__contains__(".me/")) and ((not g.split(' ')[0].__contains__("@")) and (not g.split(' ')[0].__contains__(".me/"))):
         g = g.split(f"{g.rsplit(' ', 1)[1]}")[0]
 
-    try:
-        await bot.send_photo(
-            chat_id=m.chat.id,
-            caption="🎤" + a + " - " + t + "🎼" + "\n\n" + f"🆔👉 {Config.USERNAME}",
-            photo=open('artwork.jpg', 'rb')
-        )
-    except Exception as e:
-        print(e)
+    if artwork is not None:
+        try:
+            await bot.send_photo(
+                chat_id=m.chat.id,
+                caption="🎤" + a + " - " + t + "🎼" + "\n\n" + f"🆔👉 {Config.USERNAME}",
+                photo=open('artwork.jpg', 'rb')
+            )
+        except Exception as e:
+            print(e)
 
     audio = MP3(file)
     length = audio.info.length * 0.33
@@ -128,21 +129,39 @@ async def tag(bot, m):
     music['comment'] = c + Config.custom_tag
     music['lyrics'] = l + Config.custom_tag
     music.save()
+
     if Config.CAPTION == "TRUE":
         caption = "✏️ Title: " + t + "\n" + "👤 Artist: " + a + "\n" + "💽 Album: " + al + "\n" + "🎼 Genre: " + g + "\n\n" + f"🆔👉 {Config.USERNAME}"
     else:
         caption = m.caption if m.caption else " "
-    try:
-        await bot.send_audio(
-            chat_id=m.chat.id,
-            file_name=fname + ".mp3",
-            caption=caption,
-            thumb=open('artwork.jpg', 'rb'),
-            audio="temp/file.mp3"
-        )
-    except Exception as e:
-        print(e)
 
+    if artwork is not None:
+        try:
+            await bot.send_audio(
+                chat_id=m.chat.id,
+                file_name=fname,
+                performer=a,
+                title=t,
+                duration=m.audio.duration,
+                caption=caption,
+                thumb=open('artwork.jpg', 'rb'),
+                audio='temp/file.mp3'
+            )
+        except Exception as e:
+            print(e)
+    elif artwork is None:
+        try:
+            await bot.send_audio(
+                chat_id=m.chat.id,
+                file_name=fname,
+                performer=a,
+                title=t,
+                duration=m.audio.duration,
+                caption=caption,
+                audio='temp/file.mp3'
+            )
+        except Exception as e:
+            print(e)
 
 def sendVoice(chat_id,file_name,text):
     url = "https://api.telegram.org/bot%s/sendVoice"%(Config.BOT_TOKEN)
@@ -150,4 +169,5 @@ def sendVoice(chat_id,file_name,text):
     data = {'chat_id' : chat_id, 'caption' : text}
     r= requests.post(url, files=files, data=data)
    
+
 Bot.run()

@@ -20,7 +20,9 @@ Bot = Client(
 
 START_TXT = """
 Hi {}, I'm Music Channel Manager.
+
 I can manage your music channel with some cool features like appending your predefined username to the musics tags, getting a short demo of the musics and posting the musics artworks.
+
 Just add me to a channel and post a music to get started.
 """
 

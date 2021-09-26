@@ -65,52 +65,38 @@ async def music(bot, m):
     except ValueError:
         artwork = None
 
-    if "@" in fname:
-        fname = re.sub(r'\S*@\S*', '', fname).replace('  ', ' ')
-    if ".me/" in fname:
-        fname = re.sub(r'\S*[tT].me\S*', '', fname).replace('  ', ' ')
+    if fname.__contains__("@") or fname.__contains__(".me/"):
+        fname = re.sub(r'\S*[t|T].me\S*|\S*@\S*', '', fname).replace('  ', ' ')
     if fname.startswith(' '):
         fname = fname.split(' ', 1)[+1]
 
-    if "@" in a:
-        a = re.sub(r'\S*@\S*', '', a).replace('  ', ' ')
-    if ".me/" in a:
-        a = re.sub(r'\S*[tT].me\S*', '', a).replace('  ', ' ')
+    if a.__contains__("@") or a.__contains__(".me/"):
+        a = re.sub(r'\S*[t|T].me\S*|\S*@\S*', '', a).replace('  ', ' ')
     if a.startswith(' '):
         a = a.split(' ', 1)[+1]
 
-    if "@" in g:
-        g = re.sub(r'\S*@\S*', '', g).replace('  ', ' ')
-    if ".me/" in g:
-        g = re.sub(r'\S*[tT].me\S*', '', g).replace('  ', ' ')
+    if g.__contains__("@") or g.__contains__(".me/"):
+        g = re.sub(r'\S*[t|T].me\S*|\S*@\S*', '', g).replace('  ', ' ')
     if g.startswith(' '):
         g = g.split(' ', 1)[+1]
 
-    if "@" in al:
-        al = re.sub(r'\S*@\S*', '', al).replace('  ', ' ')
-    if ".me/" in al:
-        al = re.sub(r'\S*[tT].me\S*', '', al).replace('  ', ' ')
+    if al.__contains__("@") or al.__contains__(".me/"):
+        al = re.sub(r'\S*[t|T].me\S*|\S*@\S*', '', al).replace('  ', ' ')
     if al.startswith(' '):
         al = al.split(' ', 1)[+1]
 
-    if "@" in t:
-        t = re.sub(r'\S*@\S*', '', t).replace('  ', ' ')
-    if ".me/" in t:
-        t = re.sub(r'\S*[tT].me\S*', '', t).replace('  ', ' ')
+    if t.__contains__("@") or t.__contains__(".me/"):
+        t = re.sub(r'\S*[t|T].me\S*|\S*@\S*', '', t).replace('  ', ' ')
     if t.startswith(' '):
         t = t.split(' ', 1)[+1]
 
-    if "@" in l:
-        l = re.sub(r'\S*@\S*', '', l).replace('  ', ' ')
-    if ".me/" in l:
-        l = re.sub(r'\S*[tT].me\S*', '', l).replace('  ', ' ')
+    if l.__contains__("@") or l.__contains__(".me/"):
+        l = re.sub(r'\S*[t|T].me\S*|\S*@\S*', '', l).replace('  ', ' ')
     if l.startswith(' '):
         l = l.split(' ', 1)[+1]
 
-    if "@" in c:
-        c = re.sub(r'\S*@\S*', '', c).replace('  ', ' ')
-    if ".me/" in c:
-        c = re.sub(r'\S*[tT].me\S*', '', c).replace('  ', ' ')
+    if c.__contains__("@") or c.__contains__(".me/"):
+        c = re.sub(r'\S*[t|T].me\S*|\S*@\S*', '', c).replace('  ', ' ')
     if c.startswith(' '):
         c = c.split(' ', 1)[+1]
 

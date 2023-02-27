@@ -133,12 +133,12 @@ async def music(bot, m):
     except Exception as e:
         print(e)
 
-def get_cleaned_tags(arg):
-    if arg.__contains__("@") or arg.__contains__(".me/"):
-        arg = re.sub(r'\S*[t|T].me\S*|\S*@\S*', '', arg).replace('  ', ' ')
-    if arg.startswith(' '):
-        arg = arg.split(' ', 1)[+1]
-    return arg
+def get_cleaned_tags(tag):
+    if tag.__contains__("@") or tag.__contains__(".me/"):
+        tag = re.sub(r'\S*[t|T].me\S*|\S*@\S*', '', tag).replace('  ', ' ')
+    if tag.startswith(' '):
+        tag = tag.split(' ', 1)[+1]
+    return tag
     
 def sendVoice(chat_id,file_name,text):
     url = "https://api.telegram.org/bot%s/sendVoice"%(Config.BOT_TOKEN)

@@ -86,18 +86,21 @@ async def music(bot, m):
     comment = remove_tags(f"{music['comment']}")
     lyrics = remove_tags(f"{music['lyrics']}")
     
+    # remove tags
     music.remove_tag('comment')
     music.remove_tag('artist')
     music.remove_tag('lyrics')
     music.remove_tag('title')
     music.remove_tag('album')
     music.remove_tag('genre')
-    music['artist'] = a + Config.custom_tag
-    music['title'] = t + Config.custom_tag
-    music['album'] = al + Config.custom_tag
-    music['genre'] = g + Config.custom_tag
-    music['comment'] = c + Config.custom_tag
-    music['lyrics'] = l + Config.custom_tag
+    
+    # apply new tags
+    music['artist'] = artist + Config.custom_tag
+    music['title'] = title + Config.custom_tag
+    music['album'] = album + Config.custom_tag
+    music['genre'] = genre + Config.custom_tag
+    music['comment'] = comment + Config.custom_tag
+    music['lyrics'] = lyrics + Config.custom_tag
     music.save()
 
     if Config.CAPTION == "TRUE":

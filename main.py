@@ -47,58 +47,17 @@ async def start(bot, update):
     
 @Bot.on_message(filters.channel & filters.audio)
 async def music(bot, m):
-    fname = m.audio.file_name
     file = await m.download("temp/file.mp3")
     await m.delete()
     music = load_file("temp/file.mp3")
-    t = f"{music['title']}"
-    a = f"{music['artist']}"
-    al = f"{music['album']}"
-    g = f"{music['genre']}"
-    c = f"{music['comment']}"
-    l = f"{music['lyrics']}"
+    
     try:
         artwork = music['artwork']
         image_data = artwork.value.data
         img = Image.open(io.BytesIO(image_data))
         img.save("artwork.jpg")
     except ValueError:
-        artwork = None
-
-    if fname.__contains__("@") or fname.__contains__(".me/"):
-        fname = re.sub(r'\S*[t|T].me\S*|\S*@\S*', '', fname).replace('  ', ' ')
-    if fname.startswith(' '):
-        fname = fname.split(' ', 1)[+1]
-
-    if a.__contains__("@") or a.__contains__(".me/"):
-        a = re.sub(r'\S*[t|T].me\S*|\S*@\S*', '', a).replace('  ', ' ')
-    if a.startswith(' '):
-        a = a.split(' ', 1)[+1]
-
-    if g.__contains__("@") or g.__contains__(".me/"):
-        g = re.sub(r'\S*[t|T].me\S*|\S*@\S*', '', g).replace('  ', ' ')
-    if g.startswith(' '):
-        g = g.split(' ', 1)[+1]
-
-    if al.__contains__("@") or al.__contains__(".me/"):
-        al = re.sub(r'\S*[t|T].me\S*|\S*@\S*', '', al).replace('  ', ' ')
-    if al.startswith(' '):
-        al = al.split(' ', 1)[+1]
-
-    if t.__contains__("@") or t.__contains__(".me/"):
-        t = re.sub(r'\S*[t|T].me\S*|\S*@\S*', '', t).replace('  ', ' ')
-    if t.startswith(' '):
-        t = t.split(' ', 1)[+1]
-
-    if l.__contains__("@") or l.__contains__(".me/"):
-        l = re.sub(r'\S*[t|T].me\S*|\S*@\S*', '', l).replace('  ', ' ')
-    if l.startswith(' '):
-        l = l.split(' ', 1)[+1]
-
-    if c.__contains__("@") or c.__contains__(".me/"):
-        c = re.sub(r'\S*[t|T].me\S*|\S*@\S*', '', c).replace('  ', ' ')
-    if c.startswith(' '):
-        c = c.split(' ', 1)[+1]
+        artwork = None 
 
     if artwork is not None:
         try:
@@ -118,19 +77,30 @@ async def music(bot, m):
     else:
         os.system("ffmpeg -ss 0 -t 60 -y -i \"" + file + "\" -ac 1 -map 0:a -codec:a libopus -b:a 128k -vbr off -ar 24000 temp/output.ogg")
     sendVoice(m.chat.id, "temp/output.ogg", f"🎤{a} - {t}🎼\n\n🆔👉 {Config.USERNAME}")
-        
+    
+    fname = get_cleaned_tags(m.audio.file_name)
+    title = get_cleaned_tags(f"{music['title']}")
+    artist = get_cleaned_tags(f"{music['artist']}")
+    album = get_cleaned_tags(f"{music['album']}")
+    genre = get_cleaned_tags(f"{music['genre']}")
+    comment = get_cleaned_tags(f"{music['comment']}")
+    lyrics = get_cleaned_tags(f"{music['lyrics']}")
+    
+    # remove old tags
     music.remove_tag('comment')
     music.remove_tag('artist')
     music.remove_tag('lyrics')
     music.remove_tag('title')
     music.remove_tag('album')
     music.remove_tag('genre')
-    music['artist'] = a + Config.custom_tag
-    music['title'] = t + Config.custom_tag
-    music['album'] = al + Config.custom_tag
-    music['genre'] = g + Config.custom_tag
-    music['comment'] = c + Config.custom_tag
-    music['lyrics'] = l + Config.custom_tag
+    
+    # apply new tags
+    music['artist'] = artist + Config.custom_tag
+    music['title'] = title + Config.custom_tag
+    music['album'] = album + Config.custom_tag
+    music['genre'] = genre + Config.custom_tag
+    music['comment'] = comment + Config.custom_tag
+    music['lyrics'] = lyrics + Config.custom_tag
     music.save()
 
     if Config.CAPTION == "TRUE":
@@ -163,6 +133,13 @@ async def music(bot, m):
     except Exception as e:
         print(e)
 
+def get_cleaned_tags(tag):
+    if tag.__contains__("@") or tag.__contains__(".me/"):
+        tag = re.sub(r'\S*[t|T].me\S*|\S*@\S*', '', tag).replace('  ', ' ')
+    if tag.startswith(' '):
+        tag = tag.split(' ', 1)[+1]
+    return tag
+    
 def sendVoice(chat_id,file_name,text):
     url = "https://api.telegram.org/bot%s/sendVoice"%(Config.BOT_TOKEN)
     files = {'voice': open(file_name, 'rb')}

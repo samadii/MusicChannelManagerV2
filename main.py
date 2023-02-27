@@ -78,15 +78,15 @@ async def music(bot, m):
         os.system("ffmpeg -ss 0 -t 60 -y -i \"" + file + "\" -ac 1 -map 0:a -codec:a libopus -b:a 128k -vbr off -ar 24000 temp/output.ogg")
     sendVoice(m.chat.id, "temp/output.ogg", f"🎤{a} - {t}🎼\n\n🆔👉 {Config.USERNAME}")
     
-    fname = remove_tags(m.audio.file_name)
-    title = remove_tags(f"{music['title']}")
-    artist = remove_tags(f"{music['artist']}")
-    album = remove_tags(f"{music['album']}")
-    genre = remove_tags(f"{music['genre']}")
-    comment = remove_tags(f"{music['comment']}")
-    lyrics = remove_tags(f"{music['lyrics']}")
+    fname = get_cleaned_tags(m.audio.file_name)
+    title = get_cleaned_tags(f"{music['title']}")
+    artist = get_cleaned_tags(f"{music['artist']}")
+    album = get_cleaned_tags(f"{music['album']}")
+    genre = get_cleaned_tags(f"{music['genre']}")
+    comment = get_cleaned_tags(f"{music['comment']}")
+    lyrics = get_cleaned_tags(f"{music['lyrics']}")
     
-    # remove tags
+    # remove old tags
     music.remove_tag('comment')
     music.remove_tag('artist')
     music.remove_tag('lyrics')
@@ -133,7 +133,7 @@ async def music(bot, m):
     except Exception as e:
         print(e)
 
-def remove_tags(arg):
+def get_cleaned_tags(arg):
     if arg.__contains__("@") or arg.__contains__(".me/"):
         arg = re.sub(r'\S*[t|T].me\S*|\S*@\S*', '', arg).replace('  ', ' ')
     if arg.startswith(' '):

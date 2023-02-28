@@ -47,6 +47,7 @@ async def start(bot, update):
     
 @Bot.on_message(filters.channel & filters.audio)
 async def music(bot, m):
+    fname = m.audio.file_name
     file = await m.download("temp/file.mp3")
     await m.delete()
     music = load_file("temp/file.mp3")
@@ -78,7 +79,7 @@ async def music(bot, m):
         os.system("ffmpeg -ss 0 -t 60 -y -i \"" + file + "\" -ac 1 -map 0:a -codec:a libopus -b:a 128k -vbr off -ar 24000 temp/output.ogg")
     sendVoice(m.chat.id, "temp/output.ogg", f"🎤{a} - {t}🎼\n\n🆔👉 {Config.USERNAME}")
     
-    fname = get_cleaned_tags(m.audio.file_name)
+    fname = get_cleaned_tags(fname)
     title = get_cleaned_tags(f"{music['title']}")
     artist = get_cleaned_tags(f"{music['artist']}")
     album = get_cleaned_tags(f"{music['album']}")
